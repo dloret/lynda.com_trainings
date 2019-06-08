@@ -1,10 +1,11 @@
+import { combineReducers } from 'redux';
 import C from '../constants';
 
-export const goal = (state = 10, action) => (action.type === C.SET_GOAL ? parseInt(action.payload, 10) : state);
+const goal = (state = 10, action) => (action.type === C.SET_GOAL ? parseInt(action.payload, 10) : state);
 
-export const skiDay = (state = null, action) => (action.type === C.ADD_DAY ? action.payload : state);
+const skiDay = (state = null, action) => (action.type === C.ADD_DAY ? action.payload : state);
 
-export const errors = (state = [], action) => {
+const errors = (state = [], action) => {
   switch (action.type) {
     case C.ADD_ERROR:
       return [...state, action.payload];
@@ -15,7 +16,7 @@ export const errors = (state = [], action) => {
   }
 };
 
-export const allSkiDays = (state = [], action) => {
+const allSkiDays = (state = [], action) => {
   switch (action.type) {
     case C.ADD_DAY:
       const hasDay = state.some(skiDay => skiDay.date === action.payload.date);
@@ -32,7 +33,7 @@ export const allSkiDays = (state = [], action) => {
   }
 };
 
-export const fetching = (state = false, action) => {
+const fetching = (state = false, action) => {
   switch (action.type) {
     case C.FETCH_RESORT_NAMES:
       return true;
@@ -45,7 +46,7 @@ export const fetching = (state = false, action) => {
   }
 };
 
-export const suggestions = (state = [], action) => {
+const suggestions = (state = [], action) => {
   switch (action.type) {
     case C.CLEAR_SUGGESTIONS:
       return [];
@@ -55,3 +56,13 @@ export const suggestions = (state = [], action) => {
       return state;
   }
 };
+
+export default combineReducers({
+  allSkiDays,
+  goal,
+  errors,
+  resortNames: combineReducers({
+    fetching,
+    suggestions,
+  }),
+});
