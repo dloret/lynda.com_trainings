@@ -1,29 +1,15 @@
 import C from '../constants';
 
-export const goal = (state = 10, action) => {
-  switch (action.type) {
-    case C.SET_GOAL:
-      return parseInt(action.payload, 10);
-    default:
-      return state;
-  }
-};
+export const goal = (state = 10, action) => (action.type === C.SET_GOAL ? parseInt(action.payload, 10) : state);
 
-export const skiDay = (state = null, action) => {
-  switch (action.type) {
-    case C.ADD_DAY:
-      return action.payload;
-    default:
-      return state;
-  }
-};
+export const skiDay = (state = null, action) => (action.type === C.ADD_DAY ? action.payload : state);
 
 export const errors = (state = [], action) => {
   switch (action.type) {
     case C.ADD_ERROR:
       return [...state, action.payload];
     case C.CLEAR_ERROR:
-      return state.filter((err, index) => index !== action.payload);
+      return state.filter((message, i) => i !== action.payload);
     default:
       return state;
   }
@@ -32,12 +18,39 @@ export const errors = (state = [], action) => {
 export const allSkiDays = (state = [], action) => {
   switch (action.type) {
     case C.ADD_DAY:
-      // only add the day if there is no other entry for the same day
-      return state.some(skiDay => skiDay.date === action.payload.date)
+      const hasDay = state.some(skiDay => skiDay.date === action.payload.date);
+
+      return hasDay
         ? state
-        : [...state, skiDay(null, action)];
+        : [...state, skiDay(null, action)].sort((a, b) => new Date(b.date) - new Date(a.date));
+
     case C.REMOVE_DAY:
       return state.filter(skiDay => skiDay.date !== action.payload);
+
+    default:
+      return state;
+  }
+};
+
+export const fetching = (state = false, action) => {
+  switch (action.type) {
+    case C.FETCH_RESORT_NAMES:
+      return true;
+    case C.CANCEL_FETCHING:
+      return false;
+    case C.CHANGE_SUGGESTIONS:
+      return false;
+    default:
+      return state;
+  }
+};
+
+export const suggestions = (state = [], action) => {
+  switch (action.type) {
+    case C.CLEAR_SUGGESTIONS:
+      return [];
+    case C.CHANGE_SUGGESTIONS:
+      return [...state, ...action.payload];
     default:
       return state;
   }
