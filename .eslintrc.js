@@ -16,10 +16,9 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: 'module',
   },
-  plugins: [
-    'react',
-  ],
+  plugins: ['react'],
   rules: {
-    "no-console": "off",
+    'no-console': 'off',
+    'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
   },
 };
