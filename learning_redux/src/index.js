@@ -1,19 +1,14 @@
 import C from './constants';
-import { skiDay } from './store/reducers';
+import { errors } from './store/reducers';
 
-const state = null;
+const state = ['user not authorized', 'server feed not found'];
 
 const action = {
-  type: C.ADD_DAY,
-  payload: {
-    resort: 'Heavenly',
-    date: '2016-12-16',
-    powder: true,
-    backcountry: true,
-  },
+  type: C.ADD_ERROR,
+  payload: 'cannot connect to server',
 };
 
-const nextState = skiDay(state, action);
+const nextState = errors(state, action);
 
 console.log(`
   initial state: ${state}

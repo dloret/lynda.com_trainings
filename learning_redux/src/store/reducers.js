@@ -17,3 +17,12 @@ export const skiDay = (state = {}, action) => {
       return state;
   }
 };
+
+export const errors = (state = [], action) => {
+  switch (action.type) {
+    case C.ADD_ERROR:
+      return [...state, action.payload];
+    default:
+      return state;
+  }
+};
