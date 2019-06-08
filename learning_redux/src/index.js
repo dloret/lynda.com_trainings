@@ -24,7 +24,7 @@ let nextState = allSkiDays(state, action);
 
 const action2 = {
   type: C.REMOVE_DAY,
-  payload: 0,
+  payload: '2016-12-17',
 };
 
 nextState = allSkiDays(nextState, action2);
