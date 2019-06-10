@@ -1,33 +1,16 @@
 import { createStore } from 'redux';
 import C from './constants';
 import appReducer from './store/reducers';
-import backupState from './initialState.json';
 
-const initialState = sessionStorage['learning-redux']
-  ? JSON.parse(sessionStorage['learning-redux'])
-  : backupState;
+const store = createStore(appReducer);
 
-const store = createStore(appReducer, initialState);
+const unsubscribe = store.subscribe(() => console.log(`   GOAL: ${store.getState().goal}`));
 
-// Logs the store each time the state changes
-store.subscribe(() => console.log(store.getState()));
-// Stores the state in the session storage each time it changes
-store.subscribe(() => {
-  const state = JSON.stringify(store.getState());
-  sessionStorage['learning-redux'] = state;
-});
+setInterval(() => {
+  store.dispatch({
+    type: C.SET_GOAL,
+    payload: Math.floor(Math.random() * 100),
+  });
+}, 2000);
 
-store.dispatch({
-  type: C.ADD_DAY,
-  payload: {
-    resort: 'Mt Shasta',
-    date: '2016-12-21',
-    powder: false,
-    backcountry: true,
-  },
-});
-
-store.dispatch({
-  type: C.SET_GOAL,
-  payload: 2,
-});
+setTimeout(() => unsubscribe(), 10000);
