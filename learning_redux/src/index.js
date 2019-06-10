@@ -1,11 +1,21 @@
 import { createStore } from 'redux';
 import C from './constants';
 import appReducer from './store/reducers';
-import initialState from './initialState.json';
+import backupState from './initialState.json';
+
+const initialState = sessionStorage['learning-redux']
+  ? JSON.parse(sessionStorage['learning-redux'])
+  : backupState;
 
 const store = createStore(appReducer, initialState);
 
-console.log('initial state', store.getState());
+// Logs the store each time the state changes
+store.subscribe(() => console.log(store.getState()));
+// Stores the state in the session storage each time it changes
+store.subscribe(() => {
+  const state = JSON.stringify(store.getState());
+  sessionStorage['learning-redux'] = state;
+});
 
 store.dispatch({
   type: C.ADD_DAY,
@@ -17,4 +27,7 @@ store.dispatch({
   },
 });
 
-console.log('next state', store.getState());
+store.dispatch({
+  type: C.SET_GOAL,
+  payload: 2,
+});
