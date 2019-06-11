@@ -25,3 +25,30 @@ export function setGoal(goal) {
     payload: goal,
   };
 }
+
+export function addError(error) {
+  return {
+    type: C.ADD_ERROR,
+    payload: error,
+  };
+}
+
+export function clearError(index) {
+  return {
+    type: C.CLEAR_ERROR,
+    payload: index,
+  };
+}
+
+export function changeSuggestions(suggestions) {
+  return {
+    type: C.CHANGE_SUGGESTIONS,
+    payload: suggestions,
+  };
+}
+
+export function clearSuggestions() {
+  return {
+    type: C.CLEAR_SUGGESTIONS,
+  };
+}
